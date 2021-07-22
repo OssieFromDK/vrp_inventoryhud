@@ -25,12 +25,17 @@ end
 RegisterCommand('hotbar',function()
     local playerId = PlayerId()
     local playerSource = GetPlayerServerId(playerId)
-    INserver.getHotbarItems({playerSource}, function(hotbarItems)
-        SendNUIMessage({
-            action = "showHotbar",
-            hotbarItems = hotbarItems
-        })
-    end)
+    if not inhot then
+        INserver.getHotbarItems({playerSource}, function(hotbarItems)
+            inhot = true
+            SendNUIMessage({
+                action = "showHotbar",
+                hotbarItems = hotbarItems
+            })
+            Wait(2000)
+            inhot = false
+        end)
+    end
 end)
 RegisterKeyMapping('hotbar', 'Check your hotbar items', 'keyboard', 'TAB')
 
